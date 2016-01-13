@@ -1,5 +1,6 @@
 import sqlite3
 from multiprocessing.dummy import Pool as ThreadPool
+
 from apscheduler.schedulers.blocking import BlockingScheduler
 
 from proxier import Proxier
@@ -13,10 +14,7 @@ SCHEMA = """
 
 
 def save():
-    print "Running"
-    conn = sqlite3.connect("proxy.db")
-    curs = conn.cursor()
-    curs.execute(SCHEMA)
+    print "Crawler is running "
     proxier = Proxier()
     ips, ports = proxier.crawl()
     addr = []
@@ -29,18 +27,26 @@ def save():
     pool.map(proxier.check, addr)
     pool.close()
     pool.join()
-    curs.execute("delete from 'proxy'")
-    conn.commit()
-    for addr in proxier.get():
-        curs.execute("insert into proxy (ip,port) values (?,?)", [addr['IP'], addr['Port']])
+    try:
+        conn = sqlite3.connect("./proxy.db")
+        curs = conn.cursor()
+        curs.execute(SCHEMA)
+        curs.execute("delete from 'proxy'")
         conn.commit()
-    conn.close()
+        for addr in proxier.get():
+            curs.execute("insert into proxy (ip,port) values (?,?)", [addr['IP'], addr['Port']])
+            conn.commit()
+        curs.close()
+        conn.close()
+    except sqlite3.Error:
+        pass
 
 
 if __name__ == "__main__":
     scheduler = BlockingScheduler()
-    scheduler.add_job(save, 'interval', minutes=30)
+    scheduler.add_job(save, 'interval', hours=1)
     try:
         scheduler.start()
     except (KeyboardInterrupt, SystemExit):
-        pass
+        print KeyboardInterrupt
+        print SystemExit
