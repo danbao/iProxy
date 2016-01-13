@@ -25,7 +25,7 @@ class Proxier(object):
             'http': 'http://' + addr['IP'] + ':' + addr['Port']
         }
         try:
-            resp = requests.get("http://www.baidu.com", proxies=proxies, timeout=3)
+            resp = requests.get("http://ip.cn", proxies=proxies, timeout=3)
             if resp.status_code == 200:
                 self.addrList.append(addr)
                 return True
