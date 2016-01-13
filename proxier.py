@@ -12,7 +12,7 @@ class Proxier(object):
         headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'
         }
-        for i in xrange(1):
+        for i in xrange(5):
             url = "http://www.xicidaili.com/nn/" + str(i + 1)
             resp = requests.get(url, headers=headers)
             page = html.fromstring(resp.content)
