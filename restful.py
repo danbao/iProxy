@@ -14,7 +14,7 @@ def proxy():
     addrs = curs.fetchall()
     curs.close()
     conn.close()
-    return flask.jsonify(addrs).py
+    return flask.jsonify(addrs)
 
 
 if __name__ == "__main__":
