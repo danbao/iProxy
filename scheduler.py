@@ -28,7 +28,7 @@ def save():
     pool.close()
     pool.join()
     try:
-        conn = sqlite3.connect("../proxy.db")
+        conn = sqlite3.connect("/root/proxy.db")
         curs = conn.cursor()
         curs.execute(SCHEMA)
         curs.execute("delete from 'proxy'")
