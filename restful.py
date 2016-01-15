@@ -8,7 +8,7 @@ app = Flask(__name__)
 @app.route("/proxy")
 def restful():
     try:
-        conn = sqlite3.connect("./proxy.db")
+        conn = sqlite3.connect("/root/proxy.db")
         curs = conn.cursor()
         curs.execute("select * from proxy")
         addrs = curs.fetchall()
